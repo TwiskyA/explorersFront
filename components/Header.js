@@ -4,26 +4,25 @@ import { View, Image } from "react-native";
 import { withNavigation } from "react-navigation";
 
 class Header extends Component {
-  // state = {
-  //   displayMenu: false
-  // };
-
+  // renvoie vers Compte
   onPress = () => {
-    // this.setState({ displayMenu: !this.state.displayMenu });
     this.props.navigation.navigate("Compte");
   };
 
   render() {
-    // const { navigate } = this.props.navigation;
     return (
+      // gestion view globale
       <View
         style={{
           width: "100%",
           height: 80,
           backgroundColor: "white",
-          borderRadius: 2
+          marginLeft: -5.5,
+          borderBottomWidth: 2,
+          borderColor: "#rgba(217, 198, 186, 0.6)"
         }}
       >
+        {/* affichage logo */}
         <Image
           source={require("../assets/logo.png")}
           style={{
@@ -35,6 +34,7 @@ class Header extends Component {
           }}
           color="black"
         />
+        {/* affichage btn menuburger */}
         <Button
           icon={
             <Image
@@ -53,7 +53,6 @@ class Header extends Component {
             this.onPress();
           }}
         />
-        {/* {this.state.displayMenu && <Menu/>} */}
       </View>
     );
   }

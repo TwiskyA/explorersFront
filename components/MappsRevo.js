@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import MapView, { Polygon, Marker } from "react-native-maps";
 
-class Mapps extends Component {
+class MappsRevo extends Component {
   state = {
     currentLatitude: 0,
     currentLongitude: 0,
@@ -37,19 +37,19 @@ class Mapps extends Component {
           initialRegion={{
             latitude: 48.864824,
             longitude: 2.334595,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05
+            latitudeDelta: 0.07,
+            longitudeDelta: 0.07
           }}
           region={this.state.region}
           onLayout={this.onMapLayout}
         >
           {this.state.isReady && (
             <Marker
-              title="Pont-Neuf"
+              title="Concorde"
               pinColor="#C1EA69"
               coordinate={{
-                latitude: 48.858001,
-                longitude: 2.341353
+                latitude: 48.865852,
+                longitude: 2.321204
               }}
             />
           )}
@@ -57,10 +57,9 @@ class Mapps extends Component {
             <Polygon
               coordinates={[
                 { latitude: 48.881304, longitude: 2.346062 },
-                { latitude: 48.862505, longitude: 2.352124 },
-                { latitude: 48.858001, longitude: 2.341353 },
-                { latitude: 48.852153, longitude: 2.291786 },
-                { latitude: 48.875323, longitude: 2.316815 }
+                { latitude: 48.865852, longitude: 2.321204 }, //concorde
+                { latitude: 48.856232, longitude: 2.297859 }, //mars
+                { latitude: 48.848623, longitude: 2.395921 } //place nation
               ]}
               strokeColor="rgb(217, 198, 186)"
               // au cas où strokeColor, n'est pas supporté
@@ -81,4 +80,4 @@ class Mapps extends Component {
   }
 }
 
-export default Mapps;
+export default MappsRevo;

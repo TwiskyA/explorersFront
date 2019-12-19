@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import SwitchToggle from "react-native-switch-toggle";
+import { ip } from "../config";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { View, Image, Text, TextInput, AsyncStorage } from "react-native";
-import SwitchToggle from "react-native-switch-toggle";
-import { ip } from "../config";
 
 class Parameters extends Component {
   state = {
@@ -12,13 +12,14 @@ class Parameters extends Component {
     switchOn1: false
   };
 
+  // récupère les données du back sur le user
   componentDidMount() {
     fetch(`http://${ip}:3001/users/1`) // fetch sur la route / de users/id //192.168.1.21 || 10.2.4.18
       .then(res => res.json()) // récupère les données de userInfos
       .then(
         data =>
           this.setState({
-            userInfos: data, //, () => console.log("la", this.state.userInfos)
+            userInfos: data,
             form: data,
             switchOn1: data.teacher
           })
@@ -27,26 +28,17 @@ class Parameters extends Component {
       ); // avec ces données modifie le state de userInfos
   }
 
+  // permet de modifier si le user est teacher ou non
   onPress1 = () => {
     this.setState({
       switchOn1: !this.state.switchOn1,
       form: { ...this.state.form, teacher: !this.state.switchOn1 }
     });
   };
-  //   delete = async () => {
-  // const storage = await AsyncStorage.getItem("user", (err, data) => JSON.parse(data))
+
+  // permet de supprimer le user et renvoie sur Sign
   delete = async () => {
-    const rawStorage = await AsyncStorage.getItem(
-      "user"
-      //   return { toto: "toto" };
-      //   return JSON.parse(data);
-      // if (userJSON) {
-      //   console.log("userJSON existe !");
-    );
-    // console.log("user en JSON", storage);
-    // console.log("en cours");
-    // console.log(storage, storage["_id"], storage['/"_id"/'], storage._id);
-    console.log("ICI", JSON.parse(rawStorage));
+    const rawStorage = await AsyncStorage.getItem("user");
     const storage = JSON.parse(rawStorage);
     fetch(`http://${ip}:3001/users/${storage._id}`, {
       method: "DELETE"
@@ -61,6 +53,7 @@ class Parameters extends Component {
 
   render() {
     return (
+      // gestion view globale
       <View
         style={{
           width: "100%",
@@ -73,9 +66,11 @@ class Parameters extends Component {
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>
           Mes informations
         </Text>
+        {/* view image et inputs et delete ou validé */}
         <View>
+          {/* image */}
           <Image
-            source={require("../assets/logo.png")}
+            source={require("../assets/icon.png")}
             style={{
               width: 80,
               height: 80,
@@ -88,7 +83,7 @@ class Parameters extends Component {
               marginBottom: 20
             }}
           />
-          {/* <Text>{this.state.userInfos.name}</Text> */}
+          {/* view des inputs */}
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
             <TextInput
               style={{
@@ -192,6 +187,7 @@ class Parameters extends Component {
               duration={500}
             />
           </View>
+          {/* btn delete */}
           <Button
             title="Supprimer mon compte"
             titleStyle={{
@@ -206,6 +202,7 @@ class Parameters extends Component {
             }}
             onPress={this.delete}
           />
+          {/* btn save modifs */}
           <Button
             title="Enregistrer"
             titleStyle={{ color: "black" }}

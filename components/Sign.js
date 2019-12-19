@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { ip } from "../config";
 import { View, Image, TextInput, AsyncStorage } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Text, Button } from "react-native-elements";
 import SwitchToggle from "react-native-switch-toggle";
 import { FontAwesome } from "@expo/vector-icons";
-import { ip } from "../config";
 
 class Sign extends Component {
   state = {
@@ -24,19 +24,23 @@ class Sign extends Component {
       password: this.state.userInfos.password,
       isTeacher: this.state.userInfos.isTeacher
     });
-
+    // fetch pour enregistrer le user ou le récupérer en fonction de la route
     fetch(
       `http://${ip}:3001/users/${
         this.state.connexionMode ? "signin" : "signup"
       }`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          // Accept: "application/json",
+          "Content-Type": "application/json"
+        },
         body: signupData
       }
     )
       .then(response => {
-        return response.json();
+        // return response.json();
+        return response.text();
       })
       // Load data in local storage and navigate to home page // comme on renvoie user tout court c'est pas data.user mais data
       .then(async data => {
@@ -58,10 +62,12 @@ class Sign extends Component {
     console.log(this.state.userInfos);
   };
 
+  // permet d'orienter sur la route signin lors du fetch de OnPressInsc
   onPressConnex = () => this.setState({ connexionMode: true });
-
+  // permet d'orienter sur la route signup lors du fetch de OnPressInsc
   onPressInscription = () => this.setState({ connexionMode: false });
 
+  // initialisation des Name, Email, Password et IsTeacher dans state.userInfos en les accumulant
   setFirstName = value =>
     this.setState({ userInfos: { ...this.state.userInfos, firstName: value } });
 
@@ -128,6 +134,7 @@ class Sign extends Component {
             marginLeft: 15
           }}
         >
+          {/* gestion du petit rond vert */}
           {connexionMode ? (
             <Button
               title="Connexion"
@@ -234,7 +241,6 @@ class Sign extends Component {
           }}
           onPress={() => {
             this.onPressInsc();
-            //   console.log("en construction");
           }}
         />
       </View>

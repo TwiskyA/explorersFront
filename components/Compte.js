@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import Parameters from "./Parameters";
+import { ip } from "../config";
 import { View, Text, Image, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
-import Parameters from "./Parameters";
-import { ip } from "../config";
 
 class Compte extends Component {
   state = {
@@ -25,10 +25,16 @@ class Compte extends Component {
       ); // avec ces données modifie le state de userInfos
   }
 
+  // renvoie vers Sign
   onPress = () => {
+    this.props.navigation.navigate("Home");
+  };
+  // renvoie vers ThemeList
+  onClose = () => {
     this.props.navigation.navigate("ThemeList");
   };
 
+  // toggle sur affichage des paramètres ou pas
   onPressParams = () => {
     this.setState({ param: !this.state.param });
   };
@@ -58,43 +64,42 @@ class Compte extends Component {
           elevation: 15
         }}
       >
-        {/* <Text>Toto</Text> */}
-        {/* view englobante  */}
-        {/* <View> */}
         {/* gestion de la view avatar name et icon */}
         <View style={{ flexDirection: "row" }}>
+          {/* btn close */}
           <Button
             icon={<AntDesign name="close" size={20} />}
             buttonStyle={{
               backgroundColor: "transparent",
-              left: "550%",
-              top: "5%",
+              left: 310,
+              top: "6%",
               borderColor: "transparent",
               borderRadius: 5
             }}
             onPress={() => {
-              // console.log("En cours de construction");
-              this.onPress();
+              this.onClose();
             }}
           />
+          {/* avatar */}
           <Image
-            source={require("../assets/logo.png")}
+            source={require("../assets/icon.png")}
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: 20,
+              width: 50,
+              height: 50,
+              borderRadius: 25,
               borderColor: "black",
               borderWidth: 1,
               marginLeft: "-6%",
               marginTop: "5%"
             }}
           />
+          {/* affichage nom et prénom du user */}
           <Text
             style={{
               fontSize: 16,
               fontWeight: "bold",
               marginLeft: "3%",
-              marginTop: "6%"
+              marginTop: "8.5%"
             }}
           >
             {this.state.userInfos.name} {this.state.userInfos.lastname}
@@ -128,7 +133,7 @@ class Compte extends Component {
               }}
             >
               <Text style={{ marginLeft: "5%", marginTop: "-10%" }}>
-                15 questions
+                23 Questions
               </Text>
               <Text
                 style={{ marginLeft: "5%", fontWeight: "bold", fontSize: 18 }}
@@ -163,7 +168,7 @@ class Compte extends Component {
               }}
             >
               <Text style={{ marginLeft: "5%", marginTop: "-10%" }}>
-                23 questions
+                15 Questions
               </Text>
               <Text
                 style={{ marginLeft: "5%", fontWeight: "bold", fontSize: 16 }}
@@ -180,34 +185,28 @@ class Compte extends Component {
                   borderColor: "transparent",
                   borderRadius: 5
                 }}
-                onPress={() => {
-                  console.log("En cours de construction");
-                }}
+                onPress={() => this.props.navigation.navigate("QuizzRI")}
               />
             </View>
           </ScrollView>
           {this.state.param && <Parameters />}
-          {/* </View> */}
-          {/* <UserCard /> */}
           <Button
-            // icon={<Icon name="arrow-forward" color="black" />}
             icon={<Ionicons name="md-settings" size={20} />}
             title="Paramètres"
             titleStyle={{ color: "black", marginLeft: 5 }}
             buttonStyle={{
               backgroundColor: "transparent",
               position: "absolute",
-              left: "10%",
+              left: "7.5%",
               marginTop: "4%",
               borderColor: "transparent"
             }}
             onPress={() => {
-              // console.log("En cours de construction");
               this.onPressParams();
             }}
           />
+          {/* btn de déconnexion  */}
           <Button
-            // icon={<Icon name="arrow-forward" color="black" />}
             icon={<FontAwesome name="power-off" size={20} />}
             title="Se déconnecter"
             titleStyle={{ color: "black", marginLeft: 5 }}
@@ -219,7 +218,6 @@ class Compte extends Component {
               borderColor: "transparent"
             }}
             onPress={() => {
-              // console.log("En cours de construction");
               this.onPress();
             }}
           />

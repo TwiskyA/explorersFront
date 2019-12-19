@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { Button } from "react-native-elements";
-import { View, Text, Image, TextInput } from "react-native";
-import { withNavigation } from "react-navigation";
-import { ip } from "../config";
 import PNLastStep from "./PNLastStep";
+import { ip } from "../config";
+import { Button, Icon } from "react-native-elements";
+import { View, Text, TextInput } from "react-native";
+import { withNavigation } from "react-navigation";
 
 class MultiStep extends Component {
   state = {
     currentStep: 0,
     steps: [],
-    answer: ""
+    answer: "",
+    correct: true
   };
 
   componentDidMount() {
@@ -18,16 +19,30 @@ class MultiStep extends Component {
       .then(data => this.setState({ steps: data }));
   }
 
+  // permet afficher la step en cours et de vérifier correct avec gestion de l'erreur
   getIntermediarySteps = () => {
-    const { steps, currentStep, answer } = this.state;
+    const { steps, currentStep, answer, correct } = this.state;
     return (
       <>
         <Text>{steps[currentStep] && steps[currentStep].instruction}</Text>
+        {correct ? (
+          <Text></Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: 12,
+              color: "red"
+            }}
+          >
+            Mauvaise réponse, allez on essaie à nouveau !{" "}
+          </Text>
+        )}
+        {/* gestion input du user */}
         <TextInput
           style={{
             backgroundColor: "#F2F2F2",
             width: 240,
-            marginLeft: 35,
+            marginLeft: 20,
             marginTop: 30,
             marginBottom: 15,
             paddingLeft: 10,
@@ -46,7 +61,7 @@ class MultiStep extends Component {
           }}
           buttonStyle={{
             backgroundColor: "#C1EA69",
-            marginLeft: "9%",
+            marginLeft: 20,
             marginBottom: -18,
             width: "80%",
             height: 38,
@@ -61,8 +76,10 @@ class MultiStep extends Component {
     );
   };
 
+  // permet d'écouter réposne de user et de stocker dans state.answer
   handleChange = value => this.setState({ answer: value });
 
+  // permet de vérifier réponse du user, si oui passe à la step suivante, si non vide state.answer pour que user recommence, si lastStep redirige vers PNFinal
   handleValidate = (answer = this.state.answer) => {
     //valeur par défaut
     const { steps, currentStep } = this.state;
@@ -72,20 +89,24 @@ class MultiStep extends Component {
       if (currentStep < steps.length - 1) {
         //car on ne veut pas la dernière (qui est la réponse)
         // il reste des steps
-        this.setState({ currentStep: currentStep + 1, answer: "" });
+        this.setState({
+          currentStep: currentStep + 1,
+          correct: true,
+          answer: ""
+        });
       } else {
         // toutes les steps ont été faites
         this.setState({ currentStep: 0, answer: "", steps: [] });
-        this.props.navigation.navigate("ThemeList");
+        this.props.navigation.navigate("PNFinal");
       }
     } else {
       //mauvaise réponse
-      this.setState({ answer: "" });
+      this.setState({ correct: false, answer: "" });
     }
   };
 
   render() {
-    const { steps, currentStep, answer } = this.state;
+    const { steps, currentStep } = this.state;
 
     if (steps.length <= 0) {
       // pas encore reçu les data du fetch
@@ -93,18 +114,42 @@ class MultiStep extends Component {
     }
 
     return (
-      <View
-        style={{ width: "90%", height: "50%", marginTop: 200, marginLeft: 18 }}
-      >
-        {steps[currentStep] && steps[currentStep].isLast ? (
-          <PNLastStep
-            steps={steps}
-            currentStep={currentStep}
-            validate={this.handleValidate}
-          />
-        ) : (
-          this.getIntermediarySteps()
-        )}
+      // gestion view globale
+      <View style={{ width: "98%", height: "100%" }}>
+        {/* btn retour en arrière */}
+        <Button
+          icon={<Icon name="arrow-back" color="black" />}
+          buttonStyle={{
+            backgroundColor: "transparent",
+            position: "absolute",
+            top: 25,
+            left: 15,
+            zIndex: 4,
+            borderColor: "transparent",
+            borderRadius: 5
+          }}
+          onPress={() => this.props.navigation.navigate("ThemeList")}
+        />
+        <View
+          style={{
+            width: "90%",
+            height: "50%",
+            marginTop: 200,
+            marginLeft: 25,
+            paddingLeft: 15
+          }}
+        >
+          {/* vérifier si dernière step ou pas */}
+          {steps[currentStep] && steps[currentStep].isLast ? (
+            <PNLastStep
+              steps={steps}
+              currentStep={currentStep}
+              validate={this.handleValidate}
+            />
+          ) : (
+            this.getIntermediarySteps()
+          )}
+        </View>
       </View>
     );
   }

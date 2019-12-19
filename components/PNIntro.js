@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button } from "react-native-elements";
+import MappsPN from "./MappsPN";
+import { Button, Icon } from "react-native-elements";
 import { View, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 
@@ -8,24 +9,16 @@ class PNIntro extends Component {
     enigme: []
   };
 
-  // componentDidMount() {
-  //   fetch(`http://${ip}:3001/enigmas/PN`) // fetch sur la route / de enigmas/PN
-  //     .then(res => res.json()) // récupère les données de enigme
-  //     .then(
-  //       data =>
-  //         console.log("on a nos data ?", data) ||
-  //         this.setState({ enigme: data })
-  //     );
-  // }
-
   render() {
+    const { navigate } = this.props.navigation;
     return (
+      // gestion affichage global
       <View
         style={{
           width: "98%",
-          height: "94.5%",
+          height: "90%",
           position: "absolute",
-          marginTop: "9%",
+          marginTop: "12%",
           marginLeft: "1%",
           borderWidth: 2,
           borderTopColor: "#D7D7D6",
@@ -42,16 +35,32 @@ class PNIntro extends Component {
           elevation: 15
         }}
       >
+        {/* gestion btn retour en arrière */}
+        <Button
+          icon={<Icon name="arrow-back" color="black" />}
+          buttonStyle={{
+            backgroundColor: "transparent",
+            position: "absolute",
+            top: 4,
+            left: 15,
+            zIndex: 4,
+            borderColor: "transparent",
+            borderRadius: 5
+          }}
+          onPress={() => navigate("TrailDetails")}
+        />
         <View
           style={{
             width: "90%",
-            height: "90%",
-            marginLeft: 20,
+            height: "60%",
+            marginTop: 120,
+            marginLeft: 35,
             marginRight: 15,
             justifyContent: "center",
             alignSelf: "center"
           }}
         >
+          {/* affichage titre et explications */}
           <Text style={{ fontSize: 22, fontWeight: "700" }}>
             But de l'énigme du Pont-Neuf :
           </Text>
@@ -60,6 +69,8 @@ class PNIntro extends Component {
             Tu vas découvrir à quelle date le plus vieux pont de Paris fut
             classé aux monuments historiques !
           </Text>
+          {/* affichage de la map */}
+          <MappsPN />
           <Button
             title="GO"
             titleStyle={{
@@ -68,9 +79,8 @@ class PNIntro extends Component {
             }}
             buttonStyle={{
               backgroundColor: "#C1EA69",
-              marginLeft: "8%",
-              marginBottom: "1.5%",
-              width: "80%",
+              marginLeft: 3,
+              width: "91%",
               height: 40,
               marginTop: 50
             }}

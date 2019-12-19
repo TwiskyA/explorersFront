@@ -1,13 +1,13 @@
 import React, { Component } from "react";
+import MyImage from "./Image";
 import { View, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Text } from "react-native-elements";
 import { Foundation, FontAwesome } from "@expo/vector-icons";
-import MyImage from "./Image";
 
+// gestion des étoiles de scores (restera a vour pour les notes non-entières)
 const getRating = score => {
   const rating = [];
-
   for (let i = 1; i <= 5; i++) {
     if (i <= score) {
       rating.push(
@@ -19,7 +19,6 @@ const getRating = score => {
       );
     }
   }
-
   return rating;
 };
 
@@ -27,15 +26,17 @@ class TrailCard extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+      // rend chaque card clickable
       <TouchableOpacity
         onPress={() => navigate("TrailDetails", { id: this.props.id })}
       >
+        {/* gestion de la view globale de la card */}
         <View
           style={{
             borderWidth: 1,
             borderColor: "#DDDDDD",
             borderRadius: 8,
-            marginBottom: 20,
+            marginBottom: 15,
             marginRight: 5,
             backgroundColor: "white",
             shadowColor: "#000",
@@ -45,10 +46,10 @@ class TrailCard extends Component {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-
             elevation: 5
           }}
         >
+          {/* gestion de l'image de la card */}
           <MyImage
             type={this.props.img}
             style={{
@@ -58,8 +59,8 @@ class TrailCard extends Component {
               marginBottom: -5,
               width: "100%"
             }}
-            // resizeMode="contain"
           />
+          {/* gestion du text de la card */}
           <Text
             style={{
               marginRight: 10,
@@ -68,6 +69,7 @@ class TrailCard extends Component {
               fontSize: 14
             }}
           >
+            {/* gestion du marker et du lieu */}
             <Foundation
               name="marker"
               size={15}
@@ -77,7 +79,7 @@ class TrailCard extends Component {
             <Text> </Text>
             {this.props.location}
           </Text>
-
+          {/* gestion du titre du parcours */}
           <Text
             style={{
               marginRight: 10,
@@ -88,6 +90,7 @@ class TrailCard extends Component {
           >
             {this.props.parcours}
           </Text>
+          {/* gestion des détails du parcours */}
           <View
             style={{
               display: "flex",

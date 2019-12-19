@@ -1,36 +1,26 @@
 import React, { Component } from "react";
-import { ImageBackground, View, ScrollView, AsyncStorage } from "react-native";
-import { Button, Text } from "react-native-elements";
-import { Feather, Ionicons } from "@expo/vector-icons";
 import Header from "./Header";
 import TrailCard from "./TrailCard";
 import { ip } from "../config";
-// import Test from "../components/Test";
+import { View, ScrollView, AsyncStorage } from "react-native";
+import { Button, Text } from "react-native-elements";
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 class ThemeList extends Component {
   state = {
     trailList: []
   };
 
+  // permet d récupérer les données du back (stocké dans trailList)
   componentDidMount() {
-    // AsyncStorage.getItem("user", (err, data) => {
-    //   var userJSON = JSON.parse(data);
-    //   // console.log("user en JSON", userJSON);
-    //   if (userJSON) {
-    //     // console.log("userJSON existe !");
-    //   }
-    // });
-
-    // console.log("juste avant le fetch");
-    fetch(`http://${ip}:3001/trails`) // fetch sur la route / de trails //192.168.1.21 || 10.2.4.18
+    fetch(`http://${ip}:3001/trails`) // fetch sur la route / de trails //192.168.1.21
       .then(res => res.json()) // récupère les données de trailList
       .then(data => this.setState({ trailList: data })); // avec ces données modifie le state de trailList
   }
 
+  // renvoir vers QuizzRI
   onPress = () => {
-    console.log("en cours");
-    // this.props.navigation.navigate("Mapps");
-    // this.props.navigation.navigate("Test");
+    this.props.navigation.navigate("QuizzRI");
   };
 
   render() {
@@ -38,9 +28,13 @@ class ThemeList extends Component {
 
     return (
       <View>
-        <ImageBackground
-          source={require("../assets/BKG.png")}
-          style={{ width: "100%", height: "100%", zIndex: -12 }}
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            zIndex: -12,
+            backgroundColor: "#F0F0F0"
+          }}
         >
           {/* gestion de l'ensemble des éléments de la 'page' */}
           <View
@@ -49,7 +43,6 @@ class ThemeList extends Component {
               alignItems: "center",
               justifyContent: "center",
               marginLeft: 5
-              // backgroundColor: "white"
             }}
           >
             <Header />
@@ -58,7 +51,7 @@ class ThemeList extends Component {
               style={{
                 width: "90%",
                 height: "120%",
-                marginBottom: 25,
+                marginBottom: -5,
                 zIndex: 0
               }}
               showsVerticalScrollIndicator={false}
@@ -67,6 +60,7 @@ class ThemeList extends Component {
               <View
                 style={{
                   paddingTop: 5,
+                  marginTop: 10,
                   width: "60%",
                   height: "5%",
                   marginBottom: -15
@@ -90,11 +84,12 @@ class ThemeList extends Component {
                 <View
                   style={{
                     width: "100%",
-                    height: "7%",
+                    height: 90,
                     borderWidth: 1,
                     borderColor: "#rgb(217, 198, 186)",
                     borderRadius: 5,
                     marginBottom: 2,
+                    marginTop: -5,
                     marginRight: 5,
                     backgroundColor: "rgba(217, 198, 186, 0.6)"
                   }}
@@ -109,7 +104,6 @@ class ThemeList extends Component {
                     Révolution Industrielle
                   </Text>
                   <Button
-                    // icon={<Icon name="arrow-forward" color="black" />}
                     icon={<Ionicons name="ios-arrow-forward" size={20} />}
                     buttonStyle={{
                       backgroundColor: "transparent",
@@ -120,7 +114,6 @@ class ThemeList extends Component {
                       borderRadius: 5
                     }}
                     onPress={() => {
-                      // console.log("En cours de construction");
                       this.onPress();
                     }}
                   />
@@ -129,23 +122,17 @@ class ThemeList extends Component {
                 <Text
                   style={{
                     color: "black",
-                    // fontStyle: "italic",
                     fontWeight: "bold",
                     fontSize: 25,
-                    marginTop: 15,
+                    marginTop: 25,
                     marginBottom: 10
                   }}
                 >
                   Tous les parcours
                   <Text> </Text>
                   <Feather name="sliders" size={20} />
-                  {/* <Image
-                  source={require("../assets/parameter.png")}
-                  style={{ width: 25, height: 25 }}
-                  color="black"
-                /> */}
                 </Text>
-                {/* map sur l'array trailList pour afficher autant de TraiilCard que souhaité */}
+                {/* map sur l'array trailList pour afficher autant de TrailCard que souhaité */}
                 {trailList.map((trail, i) => (
                   <TrailCard
                     key={trail.id + i}
@@ -160,7 +147,7 @@ class ThemeList extends Component {
               </View>
             </ScrollView>
           </View>
-        </ImageBackground>
+        </View>
       </View>
     );
   }

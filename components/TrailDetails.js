@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import MyImage from "./Image";
+import { ip } from "../config";
+import SwitchMapps from "./SwitchMapps";
+import { View, Image, ScrollView } from "react-native";
 import { Button, Text, Icon } from "react-native-elements";
 import { Foundation } from "@expo/vector-icons";
-import Mapps from "./Mapps";
-import { ip } from "../config";
-import MyImage from "./Image";
-import PNIntro from "./PNIntro";
 
 class TrailDetails extends Component {
   state = {
@@ -14,14 +12,17 @@ class TrailDetails extends Component {
     displayTeacher: false
   };
 
+  // toggle sur le state.displayTeacher
   onPress = () => {
     this.setState({ displayTeacher: !this.state.displayTeacher });
   };
 
+  // renvoie vers PNIntro
   go = () => {
     this.props.navigation.navigate("PNIntro");
   };
 
+  // permet fetch sur le bon parcours (pour avoir les bonnes données associées)
   componentDidMount() {
     fetch(`http://${ip}:3001/trails/${this.props.navigation.state.params.id}`) // fetch sur la route / de trails/id //192.168.1.21 || 10.2.4.18
       .then(res => res.json()) // récupère les données de trailList
@@ -31,29 +32,24 @@ class TrailDetails extends Component {
   render() {
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
-    // console.log(navigation.state.params.id);
     return (
       <View>
         {/*  gestion de l'affichage global */}
         <ScrollView
           style={{
             width: "100%",
-            // height: "96.2%",
             marginTop: 27,
             marginBottom: 50,
-            // marginLeft: 200,
-            borderWidth: 1,
+            borderBottomWidth: 1,
             borderColor: "#DDDDDD",
             borderRadius: 5,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
-            borderBottomColor: "rgba(217, 198, 186, 0.6)",
-            // backgroundColor: "#D3D4D5",
-            borderTopWidth: 0
+            borderBottomColor: "rgba(217, 198, 186, 0.6)"
           }}
           showsVerticalScrollIndicator={false}
-          // contentContainerStyle={StyleSheet.absoluteFillObject}
         >
+          {/* gestion du btn de retour en arrière */}
           <Button
             icon={<Icon name="arrow-back" color="black" />}
             buttonStyle={{
@@ -65,30 +61,34 @@ class TrailDetails extends Component {
               borderColor: "transparent",
               borderRadius: 5
             }}
-            // onPress=
             onPress={() => navigate("ThemeList")}
           />
-          {/* récupérer l'id pour faire un test dessus pour savoir de quelle case du tab trailList il faut afficher les infos */}
-          {/* <Text>parcours : {navigation.state.params.id}</Text> */}
+          {/* gestion de l'image */}
           <MyImage
             type={this.state.trailDetails.img}
             style={{
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5,
               height: 250,
               width: "100%"
             }}
           />
           {/* no panic ! btn de test pour ma logique de toggle des notions du programme si isTeacher est true */}
-          <View style={{ marginRight: 10, marginLeft: 10, marginTop: 10 }}>
-            <Button
+          <View
+            style={{
+              width: "86%",
+              marginRight: 30,
+              marginLeft: 30,
+              marginTop: 10,
+              marginBottom: 10
+            }}
+          >
+            {/* <Button
               title="Teacher"
               titleStyle={{
                 color: "black",
                 fontSize: 14
               }}
               buttonStyle={{
-                backgroundColor: "red",
+                backgroundColor: "#C1EA69",
                 width: 70,
                 height: 35,
                 borderRadius: 20
@@ -96,7 +96,8 @@ class TrailDetails extends Component {
               onPress={() => {
                 this.onPress();
               }}
-            />
+            /> */}
+
             {/* gestion de l'affichage des données récupérées de trailList */}
             <View
               style={{
@@ -106,38 +107,177 @@ class TrailDetails extends Component {
                 marginTop: 10
               }}
             >
+              {/* titre du paprcours */}
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                 {this.state.trailDetails.parcours}
               </Text>
-              {/* {this.props.parcours} */}
-              <Text style={{ marginRight: 10, marginTop: 10, fontSize: 14 }}>
+              {/* marker et lieu */}
+              <Text style={{ marginRight: 10, marginBottom: 10, fontSize: 14 }}>
                 <Foundation name="marker" size={20} color="#C1EA69" />
                 <Text> </Text>
                 {this.state.trailDetails.location}
               </Text>
             </View>
+            {/* détails du parcours */}
             <Text style={{ fontSize: 16 }}>
               {this.state.trailDetails.subtitle}
             </Text>
-            <Text style={{ height: 60 }}>{this.state.trailDetails.desc}</Text>
+            {/* si state.displayTeacher est true affiche les notions du programme */}
             {this.state.displayTeacher && (
               <Text style={{ fontSize: 18, fontWeight: "bold", height: 150 }}>
                 {this.state.trailDetails.details}
               </Text>
             )}
-            {/* <Text style={{ height: 100 }}>{this.state.trailDetails.desc}</Text>
-            <Text style={{ height: 100 }}>{this.state.trailDetails.desc}</Text>
-            <Text style={{ height: 100 }}>{this.state.trailDetails.desc}</Text>
-            <Text style={{ height: 100 }}>{this.state.trailDetails.desc}</Text> */}
           </View>
 
+          <View>
+            {/* détails notions programme */}
+            <Text style={{ marginLeft: 30, fontSize: 20, fontWeight: "bold" }}>
+              {this.state.trailDetails.details}
+            </Text>
+            {/* matière */}
+            <Text
+              style={{
+                marginLeft: 30,
+                fontSize: 16,
+                textDecorationLine: "underline"
+              }}
+            >
+              {this.state.trailDetails.matiere}
+            </Text>
+            {/* notions abordées */}
+            <Text style={{ marginLeft: 30, fontSize: 15 }}>
+              {this.state.trailDetails.notions}
+            </Text>
+            {/* mais aussi */}
+            <Text
+              style={{
+                fontSize: 15,
+                textDecorationLine: "underline",
+                // marginLeft: 1,
+                marginTop: 12,
+                marginLeft: 30
+              }}
+            >
+              Mais aussi :
+            </Text>
+            {/* gestion de l'affichage des tags */}
+            <View
+              style={{
+                width: 200,
+                marginLeft: 30,
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              {this.state.trailDetails.tag1 ? (
+                <Button
+                  title={this.state.trailDetails.tag1}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    width: 40,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+              {this.state.trailDetails.tag2 ? (
+                <Button
+                  title={this.state.trailDetails.tag2}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    width: 80,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+              {this.state.trailDetails.tag3 ? (
+                <Button
+                  title={this.state.trailDetails.tag3}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    width: 60,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+              {this.state.trailDetails.tag4 ? (
+                <Button
+                  title={this.state.trailDetails.tag4}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    width: 90,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+              {this.state.trailDetails.tag5 ? (
+                <Button
+                  title={this.state.trailDetails.tag5}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    marginLeft: 15,
+                    width: 140,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+              {this.state.trailDetails.tag6 ? (
+                <Button
+                  title={this.state.trailDetails.tag6}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 14
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D9C6BA",
+                    marginTop: 8,
+                    marginLeft: 15,
+                    width: 150,
+                    height: 28,
+                    borderRadius: 5
+                  }}
+                />
+              ) : null}
+            </View>
+          </View>
+
+          {/* gestion affichage card avec la map intéractive */}
           <View
             style={{
               borderWidth: 1,
               borderColor: "#DDDDDD",
               borderRadius: 8,
               marginBottom: 20,
-              // marginRight: "1%",
               marginLeft: "10%",
               marginTop: 15,
               width: "80%",
@@ -155,34 +295,21 @@ class TrailDetails extends Component {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Mapps />
+              {/* affiche la bonne map */}
+              <SwitchMapps mapName={this.state.trailDetails.mapName} />
             </View>
-            {/* <Image
-              source={require("../assets/Map2.png")}
-              style={{
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5,
-                width: "100%"
-              }}
-            /> */}
             {/* gestion du picto et départ */}
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                // marginBottom: 15,
-                marginRight: "68%",
-                marginLeft: "5%",
+                marginRight: 187,
+                marginLeft: 23,
                 marginTop: "1%"
               }}
             >
-              <Foundation
-                name="marker"
-                size={25}
-                color="#C1EA69"
-                // iconStyle={{ marginRight: 35 }}
-              />
+              <Foundation name="marker" size={25} color="#C1EA69" />
               <Text style={{ marginTop: "4%" }}>Départ</Text>
             </View>
 
@@ -193,11 +320,7 @@ class TrailDetails extends Component {
                 style={{
                   width: 35,
                   height: 30,
-                  // borderRadius: 20,
-                  // borderColor: "black",
-                  // borderWidth: 1
-                  marginLeft: 5
-                  // marginTop: "5%"
+                  marginLeft: 12
                 }}
               />
               <Text
@@ -220,12 +343,7 @@ class TrailDetails extends Component {
                 marginRight: 10,
                 marginLeft: 10
               }}
-            >
-              {/* <Text h4>{this.props.subtitle}</Text>
-              <Text style={{ marginTop: 10 }}>
-                {getRating(this.props.rating)}
-              </Text> */}
-            </View>
+            ></View>
           </View>
         </ScrollView>
 
@@ -248,40 +366,14 @@ class TrailDetails extends Component {
               marginBottom: "1.5%",
               width: "80%",
               height: 38,
-              // borderRadius: 20,
               position: "absolute",
               bottom: "100%"
             }}
             onPress={() => {
               this.go();
-              // console.log("en construction");
-              // navigate("IntroTrail", { id: this.props.id });
             }}
           />
-          {/* <Text>
-            Parcours
-          </Text> */}
-          {/* {this.props.parcours} */}
-          {/* <Text style={{ marginRight: 10, marginLeft: 10 }}>
-            <Foundation name="marker" size={15} />
-            <Text> </Text> */}
-          {/* {this.props.location} */}
-          {/* location
-          </Text> */}
         </View>
-        {/* <TouchableOpacity
-
-          style={{
-            alignItems: 'center',
-            backgroundColor: '#C1EA69',
-            width: '86%',
-            height: 40,
-            borderRadius: 4,
-            borderColor: 'transparent'
-          }}
-        >
-          <Text>Select</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
