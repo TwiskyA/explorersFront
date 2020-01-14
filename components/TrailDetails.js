@@ -5,6 +5,7 @@ import SwitchMapps from "./SwitchMapps";
 import { View, Image, ScrollView } from "react-native";
 import { Button, Text, Icon } from "react-native-elements";
 import { Foundation } from "@expo/vector-icons";
+import BtnGoHome from "./BtnGoHome";
 
 class TrailDetails extends Component {
   state = {
@@ -18,7 +19,7 @@ class TrailDetails extends Component {
   };
 
   // renvoie vers PNIntro
-  go = () => {
+  startEnigma = () => {
     this.props.navigation.navigate("PNIntro");
   };
 
@@ -30,7 +31,6 @@ class TrailDetails extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
     const { navigate } = this.props.navigation;
     return (
       <View>
@@ -49,20 +49,7 @@ class TrailDetails extends Component {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {/* gestion du btn de retour en arrière */}
-          <Button
-            icon={<Icon name="arrow-back" color="black" />}
-            buttonStyle={{
-              backgroundColor: "transparent",
-              position: "absolute",
-              top: 4,
-              left: 15,
-              zIndex: 4,
-              borderColor: "transparent",
-              borderRadius: 5
-            }}
-            onPress={() => navigate("ThemeList")}
-          />
+          <BtnGoHome style={{ top: 4 }} />
           {/* gestion de l'image */}
           <MyImage
             type={this.state.trailDetails.img}
@@ -71,7 +58,7 @@ class TrailDetails extends Component {
               width: "100%"
             }}
           />
-          {/* no panic ! btn de test pour ma logique de toggle des notions du programme si isTeacher est true */}
+          {/* btn de test pour ma logique de toggle des notions du programme si isTeacher est true */}
           <View
             style={{
               width: "86%",
@@ -154,7 +141,6 @@ class TrailDetails extends Component {
               style={{
                 fontSize: 15,
                 textDecorationLine: "underline",
-                // marginLeft: 1,
                 marginTop: 12,
                 marginLeft: 30
               }}
@@ -164,13 +150,32 @@ class TrailDetails extends Component {
             {/* gestion de l'affichage des tags */}
             <View
               style={{
-                width: 200,
                 marginLeft: 30,
                 flexDirection: "row",
-                justifyContent: "space-between"
+                justifyContent: "flex-start"
               }}
             >
-              {this.state.trailDetails.tag1 ? (
+              {Object.keys(this.state.trailDetails)
+                .filter(keys => keys.includes("tag"))
+                .map(tag => (
+                  <Button
+                    key={this.state.trailDetails[tag]}
+                    title={this.state.trailDetails[tag]}
+                    titleStyle={{
+                      color: "black",
+                      fontSize: 14
+                    }}
+                    buttonStyle={{
+                      backgroundColor: "#D9C6BA",
+                      marginTop: 8,
+                      marginRight: 10,
+                      height: 28,
+                      borderRadius: 5
+                    }}
+                  />
+                ))}
+
+              {/* {this.state.trailDetails.tag1 && (
                 <Button
                   title={this.state.trailDetails.tag1}
                   titleStyle={{
@@ -180,13 +185,14 @@ class TrailDetails extends Component {
                   buttonStyle={{
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
-                    width: 40,
+                    // width: 40,
+                    width: "auto",
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
-              {this.state.trailDetails.tag2 ? (
+              )}
+              {this.state.trailDetails.tag2 && (
                 <Button
                   title={this.state.trailDetails.tag2}
                   titleStyle={{
@@ -196,13 +202,14 @@ class TrailDetails extends Component {
                   buttonStyle={{
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
-                    width: 80,
+                    // width: 80,
+                    width: "auto", //fitContent
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
-              {this.state.trailDetails.tag3 ? (
+              )}
+              {this.state.trailDetails.tag3 && (
                 <Button
                   title={this.state.trailDetails.tag3}
                   titleStyle={{
@@ -212,13 +219,14 @@ class TrailDetails extends Component {
                   buttonStyle={{
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
-                    width: 60,
+                    // width: 60,
+                    width: "auto",
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
-              {this.state.trailDetails.tag4 ? (
+              )}
+              {this.state.trailDetails.tag4 && (
                 <Button
                   title={this.state.trailDetails.tag4}
                   titleStyle={{
@@ -228,13 +236,14 @@ class TrailDetails extends Component {
                   buttonStyle={{
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
-                    width: 90,
+                    // width: 90,
+                    width: "auto",
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
-              {this.state.trailDetails.tag5 ? (
+              )}
+              {this.state.trailDetails.tag5 && (
                 <Button
                   title={this.state.trailDetails.tag5}
                   titleStyle={{
@@ -245,13 +254,14 @@ class TrailDetails extends Component {
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
                     marginLeft: 15,
-                    width: 140,
+                    // width: 140,
+                    width: "auto",
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
-              {this.state.trailDetails.tag6 ? (
+              )}
+              {this.state.trailDetails.tag6 && (
                 <Button
                   title={this.state.trailDetails.tag6}
                   titleStyle={{
@@ -262,12 +272,13 @@ class TrailDetails extends Component {
                     backgroundColor: "#D9C6BA",
                     marginTop: 8,
                     marginLeft: 15,
-                    width: 150,
+                    // width: 150,
+                    width: "auto",
                     height: 28,
                     borderRadius: 5
                   }}
                 />
-              ) : null}
+              )} */}
             </View>
           </View>
 
@@ -370,7 +381,7 @@ class TrailDetails extends Component {
               bottom: "100%"
             }}
             onPress={() => {
-              this.go();
+              this.startEnigma();
             }}
           />
         </View>

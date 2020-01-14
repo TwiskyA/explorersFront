@@ -36,7 +36,7 @@ class PNLastStep extends React.Component {
               color: "red"
             }}
           >
-            Mauvaise réponse, allez on essaie à nouveau !{" "}
+            Mauvaise réponse, allez on essaie à nouveau !
           </Text>
         )}
         {/* permet afficher un btn pour chaque step précédente avec la réponse à ladite step */}

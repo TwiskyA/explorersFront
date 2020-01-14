@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://se-x4w.anonymous.explorersfront.exp.direct",
-  "packagerNgrokUrl": "https://packager.se-x4w.anonymous.explorersfront.exp.direct",
-  "ngrokPid": 19688
+  "packagerPort": 19001,
+  "packagerPid": 15484,
+  "expoServerNgrokUrl": "https://gd-x2d.anonymous.explorersfront.exp.direct",
+  "packagerNgrokUrl": "https://packager.gd-x2d.anonymous.explorersfront.exp.direct",
+  "ngrokPid": 13644
 }

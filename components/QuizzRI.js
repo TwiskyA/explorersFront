@@ -3,6 +3,7 @@ import { ip } from "../config";
 import { Button, Icon } from "react-native-elements";
 import { View, Text } from "react-native";
 import { withNavigation } from "react-navigation";
+import BtnGoHome from "./BtnGoHome";
 
 class MultiStep extends Component {
   state = {
@@ -140,25 +141,12 @@ class MultiStep extends Component {
     //on vérifie si données reçues et gère le cas du non
     if (steps.length <= 0) {
       // pas encore reçu les data du fetch
-      return <Text>en attente des données</Text>;
+      return <Text>En attente des données...</Text>;
     }
 
     return (
       <View style={{ width: "98%", height: "100%" }}>
-        {/* btn de retour si besoin */}
-        <Button
-          icon={<Icon name="arrow-back" color="black" />}
-          buttonStyle={{
-            backgroundColor: "transparent",
-            position: "absolute",
-            top: 25,
-            left: 15,
-            zIndex: 4,
-            borderColor: "transparent",
-            borderRadius: 5
-          }}
-          onPress={() => this.props.navigation.navigate("ThemeList")}
-        />
+        <BtnGoHome />
         <View
           style={{
             width: "90%",

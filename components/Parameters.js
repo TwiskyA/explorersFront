@@ -211,7 +211,7 @@ class Parameters extends Component {
               width: 300,
               marginLeft: 5
             }}
-            onPress={() => console.log(this.state.form)}
+            onPress={() => console.log("en cours de construction")}
           />
         </View>
       </View>

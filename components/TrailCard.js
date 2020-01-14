@@ -1,26 +1,27 @@
 import React, { Component } from "react";
 import MyImage from "./Image";
+import GetRating from "./GetRating";
 import { View, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Text } from "react-native-elements";
 import { Foundation, FontAwesome } from "@expo/vector-icons";
 
 // gestion des étoiles de scores (restera a vour pour les notes non-entières)
-const getRating = score => {
-  const rating = [];
-  for (let i = 1; i <= 5; i++) {
-    if (i <= score) {
-      rating.push(
-        <FontAwesome key={i} name="star" size={15} color="#C1EA69" />
-      );
-    } else {
-      rating.push(
-        <FontAwesome key={i} name="star" size={15} color="#D9C6BA" />
-      );
-    }
-  }
-  return rating;
-};
+// const getRating = score => {
+//   const rating = [];
+//   for (let i = 1; i <= 5; i++) {
+//     if (i <= score) {
+//       rating.push(
+//         <FontAwesome key={i} name="star" size={15} color="#C1EA69" />
+//       );
+//     } else {
+//       rating.push(
+//         <FontAwesome key={i} name="star" size={15} color="#D9C6BA" />
+//       );
+//     }
+//   }
+//   return rating;
+// };
 
 class TrailCard extends Component {
   render() {
@@ -106,7 +107,7 @@ class TrailCard extends Component {
               <Text>{this.props.subtitle}</Text>
             </View>
             <Text style={{ marginTop: 17 }}>
-              {getRating(this.props.rating)}
+              <GetRating score={this.props.rating} />
             </Text>
           </View>
         </View>

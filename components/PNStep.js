@@ -4,6 +4,7 @@ import { ip } from "../config";
 import { Button, Icon } from "react-native-elements";
 import { View, Text, TextInput } from "react-native";
 import { withNavigation } from "react-navigation";
+import BtnGoHome from "./BtnGoHome";
 
 class MultiStep extends Component {
   state = {
@@ -34,7 +35,7 @@ class MultiStep extends Component {
               color: "red"
             }}
           >
-            Mauvaise réponse, allez on essaie à nouveau !{" "}
+            Mauvaise réponse, allez on essaie à nouveau !
           </Text>
         )}
         {/* gestion input du user */}
@@ -87,8 +88,8 @@ class MultiStep extends Component {
     if (steps.length > 0 && steps[currentStep].solution === answer) {
       // bonne réponse
       if (currentStep < steps.length - 1) {
-        //car on ne veut pas la dernière (qui est la réponse)
         // il reste des steps
+        //car on ne veut pas la dernière (qui est la réponse)
         this.setState({
           currentStep: currentStep + 1,
           correct: true,
@@ -117,19 +118,7 @@ class MultiStep extends Component {
       // gestion view globale
       <View style={{ width: "98%", height: "100%" }}>
         {/* btn retour en arrière */}
-        <Button
-          icon={<Icon name="arrow-back" color="black" />}
-          buttonStyle={{
-            backgroundColor: "transparent",
-            position: "absolute",
-            top: 25,
-            left: 15,
-            zIndex: 4,
-            borderColor: "transparent",
-            borderRadius: 5
-          }}
-          onPress={() => this.props.navigation.navigate("ThemeList")}
-        />
+        <BtnGoHome />
         <View
           style={{
             width: "90%",

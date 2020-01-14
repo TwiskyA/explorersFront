@@ -10,6 +10,7 @@ import PNIntro from "./components/PNIntro";
 import PNStep from "./components/PNStep";
 import PNFinal from "./components/PNFinal";
 import QuizzRI from "./components/QuizzRI";
+import BtnGoHome from "./components/BtnGoHome";
 
 const navigationOptions = () => ({
   header: null
@@ -53,6 +54,10 @@ const MainNavigator = createStackNavigator({
   },
   QuizzRI: {
     screen: QuizzRI,
+    navigationOptions
+  },
+  BtnGoHome: {
+    screen: BtnGoHome,
     navigationOptions
   }
 });

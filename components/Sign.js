@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { ip } from "../config";
+import Inscription from "./Inscription";
+import Connexion from "./Connexion";
 import { View, Image, TextInput, AsyncStorage } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Text, Button } from "react-native-elements";
-import SwitchToggle from "react-native-switch-toggle";
+// import SwitchToggle from "react-native-switch-toggle";
 import { FontAwesome } from "@expo/vector-icons";
 
 class Sign extends Component {
   state = {
     userInfos: {
-      firstName: "",
+      name: "",
       email: "",
       password: "",
       isTeacher: false
@@ -19,7 +21,7 @@ class Sign extends Component {
 
   onPressInsc = () => {
     var signupData = JSON.stringify({
-      firstName: this.state.userInfos.firstName,
+      name: this.state.userInfos.firstName,
       email: this.state.userInfos.email,
       password: this.state.userInfos.password,
       isTeacher: this.state.userInfos.isTeacher
@@ -47,7 +49,7 @@ class Sign extends Component {
         await AsyncStorage.setItem("user", JSON.stringify(data));
         this.setState({
           userInfos: {
-            firstName: "",
+            name: "",
             email: "",
             password: "",
             isTeacher: false
@@ -68,8 +70,8 @@ class Sign extends Component {
   onPressInscription = () => this.setState({ connexionMode: false });
 
   // initialisation des Name, Email, Password et IsTeacher dans state.userInfos en les accumulant
-  setFirstName = value =>
-    this.setState({ userInfos: { ...this.state.userInfos, firstName: value } });
+  setName = value =>
+    this.setState({ userInfos: { ...this.state.userInfos, name: value } });
 
   setEmail = value =>
     this.setState({ userInfos: { ...this.state.userInfos, email: value } });
@@ -135,85 +137,57 @@ class Sign extends Component {
           }}
         >
           {/* gestion du petit rond vert */}
-          {connexionMode ? (
-            <Button
-              title="Connexion"
-              titleStyle={{ color: "black", marginLeft: 5 }}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 20,
-                top: 3,
-                marginTop: "4%",
-                borderColor: "transparent",
-                flexDirection: "column-reverse"
-              }}
-              icon={<FontAwesome name="circle" size={10} color="#C1EA69" />}
-              onPress={this.onPressConnex}
-            />
-          ) : (
-            <Button
-              title="Connexion"
-              titleStyle={{ color: "black", marginLeft: 5 }}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 25,
-                top: 3,
-                marginTop: "4%",
-                borderColor: "transparent",
-                flexDirection: "column-reverse"
-              }}
-              icon={<FontAwesome name="circle" size={10} color="transparent" />}
-              onPress={this.onPressConnex}
-            />
-          )}
-          {connexionMode ? (
-            <Button
-              title="Inscription"
-              titleStyle={{ color: "black", marginLeft: 5 }}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 150,
-                top: 3,
-                marginTop: "4%",
-                borderColor: "transparent",
-                flexDirection: "column-reverse"
-              }}
-              icon={<FontAwesome name="circle" size={10} color="transparent" />}
-              onPress={this.onPressInscription}
-            />
-          ) : (
-            <Button
-              title="Inscription"
-              titleStyle={{ color: "black", marginLeft: 5 }}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 150,
-                top: 3,
-                marginTop: "4%",
-                borderColor: "transparent",
-                flexDirection: "column-reverse"
-              }}
-              icon={<FontAwesome name="circle" size={10} color="#C1EA69" />}
-              onPress={this.onPressInscription}
-            />
-          )}
+          <Button
+            title="Connexion"
+            titleStyle={{ color: "black", marginLeft: 5 }}
+            buttonStyle={{
+              backgroundColor: "transparent",
+              position: "absolute",
+              left: 25,
+              top: 3,
+              marginTop: "4%",
+              borderColor: "transparent",
+              flexDirection: "column-reverse"
+            }}
+            icon={
+              connexionMode && (
+                <FontAwesome name="circle" size={10} color="#C1EA69" />
+              )
+            }
+            onPress={this.onPressConnex}
+          />
+          <Button
+            title="Inscription"
+            titleStyle={{ color: "black", marginLeft: 5 }}
+            buttonStyle={{
+              backgroundColor: "transparent",
+              position: "absolute",
+              left: 150,
+              top: 3,
+              marginTop: "4%",
+              borderColor: "transparent",
+              flexDirection: "column-reverse"
+            }}
+            icon={
+              !connexionMode && (
+                <FontAwesome name="circle" size={10} color="#C1EA69" />
+              )
+            }
+            onPress={this.onPressInscription}
+          />
         </View>
         {/* en fonction de l'état de connexionMode, on passe certaines infos en props respectivements à connexion et a inscription*/}
         {connexionMode ? (
           <Connexion
-            firstName={this.state.userInfos.firstName}
-            setFirstName={this.setFirstName}
+            name={this.state.userInfos.name}
+            setName={this.setName}
             password={this.state.userInfos.password}
             setPassword={this.setPassword}
           />
         ) : (
           <Inscription
-            firstName={this.state.userInfos.firstName}
-            setFirstName={this.setFirstName}
+            name={this.state.userInfos.name}
+            setName={this.setName}
             email={this.state.userInfos.email}
             setEmail={this.setEmail}
             password={this.state.userInfos.password}
@@ -252,166 +226,166 @@ export default withNavigation(Sign);
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-class Inscription extends Component {
-  render() {
-    const {
-      firstName,
-      setFirstName,
-      email,
-      setEmail,
-      password,
-      setPassword,
-      isTeacher,
-      toggleIsTeacher
-    } = this.props;
-    return (
-      // gestion de la vue globale
-      <View
-        style={{
-          width: "90%",
-          height: 290,
-          marginLeft: "5%",
-          marginBottom: 20,
-          marginRight: 5,
-          backgroundColor: "white"
-        }}
-      >
-        {/* début du form d'inscription */}
-        <Text style={{ position: "absolute", top: 8, left: 38 }}>
-          Your FirstName
-        </Text>
-        <TextInput
-          style={{
-            backgroundColor: "#F2F2F2",
-            width: 180,
-            marginLeft: 35,
-            marginTop: 30,
-            paddingLeft: 10,
-            borderWidth: 1.5,
-            borderRadius: 5
-          }}
-          onChangeText={value => setFirstName(value)}
-          value={firstName}
-          placeholder="John Doe"
-        />
-        <Text style={{ position: "absolute", top: 78, left: 38 }}>
-          Your Email
-        </Text>
-        <TextInput
-          style={{
-            backgroundColor: "#F2F2F2",
-            width: 180,
-            marginLeft: 35,
-            marginTop: 38,
-            paddingLeft: 10,
-            borderWidth: 1.5,
-            borderRadius: 5
-          }}
-          onChangeText={value => setEmail(value)}
-          value={email}
-          placeholder="john@gmail.com"
-        />
-        <Text style={{ position: "absolute", top: 148, left: 38 }}>
-          Your Password
-        </Text>
-        <TextInput
-          style={{
-            backgroundColor: "#F2F2F2",
-            width: 180,
-            marginLeft: 35,
-            marginTop: "14%",
-            paddingLeft: 10,
-            borderWidth: 1.5,
-            borderRadius: 5
-          }}
-          onChangeText={value => setPassword(value)}
-          value={password}
-          placeholder="********"
-        />
-        <Text style={{ position: "absolute", top: 218, left: 40 }}>
-          Teacher
-        </Text>
-        <SwitchToggle
-          containerStyle={{
-            marginTop: 40,
-            marginLeft: 40,
-            width: 60,
-            height: 30,
-            borderRadius: 25,
-            backgroundColor: "white",
-            padding: 5
-          }}
-          circleStyle={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-            borderWidth: 1,
-            borderColor: "grey",
-            backgroundColor: "white"
-          }}
-          switchOn={isTeacher}
-          onPress={toggleIsTeacher}
-          circleColorOff="white"
-          circleColorOn="#C1EA69"
-          duration={500}
-        />
-      </View>
-    );
-  }
-}
+// class Inscription extends Component {
+//   render() {
+//     const {
+//       firstName,
+//       setFirstName,
+//       email,
+//       setEmail,
+//       password,
+//       setPassword,
+//       isTeacher,
+//       toggleIsTeacher
+//     } = this.props;
+//     return (
+//       // gestion de la vue globale
+//       <View
+//         style={{
+//           width: "90%",
+//           height: 290,
+//           marginLeft: "5%",
+//           marginBottom: 20,
+//           marginRight: 5,
+//           backgroundColor: "white"
+//         }}
+//       >
+//         {/* début du form d'inscription */}
+//         <Text style={{ position: "absolute", top: 8, left: 38 }}>
+//           Your FirstName
+//         </Text>
+//         <TextInput
+//           style={{
+//             backgroundColor: "#F2F2F2",
+//             width: 180,
+//             marginLeft: 35,
+//             marginTop: 30,
+//             paddingLeft: 10,
+//             borderWidth: 1.5,
+//             borderRadius: 5
+//           }}
+//           onChangeText={value => setFirstName(value)}
+//           value={firstName}
+//           placeholder="John Doe"
+//         />
+//         <Text style={{ position: "absolute", top: 78, left: 38 }}>
+//           Your Email
+//         </Text>
+//         <TextInput
+//           style={{
+//             backgroundColor: "#F2F2F2",
+//             width: 180,
+//             marginLeft: 35,
+//             marginTop: 38,
+//             paddingLeft: 10,
+//             borderWidth: 1.5,
+//             borderRadius: 5
+//           }}
+//           onChangeText={value => setEmail(value)}
+//           value={email}
+//           placeholder="john@gmail.com"
+//         />
+//         <Text style={{ position: "absolute", top: 148, left: 38 }}>
+//           Your Password
+//         </Text>
+//         <TextInput
+//           style={{
+//             backgroundColor: "#F2F2F2",
+//             width: 180,
+//             marginLeft: 35,
+//             marginTop: "14%",
+//             paddingLeft: 10,
+//             borderWidth: 1.5,
+//             borderRadius: 5
+//           }}
+//           onChangeText={value => setPassword(value)}
+//           value={password}
+//           placeholder="********"
+//         />
+//         <Text style={{ position: "absolute", top: 218, left: 40 }}>
+//           Teacher
+//         </Text>
+//         <SwitchToggle
+//           containerStyle={{
+//             marginTop: 40,
+//             marginLeft: 40,
+//             width: 60,
+//             height: 30,
+//             borderRadius: 25,
+//             backgroundColor: "white",
+//             padding: 5
+//           }}
+//           circleStyle={{
+//             width: 30,
+//             height: 30,
+//             borderRadius: 15,
+//             borderWidth: 1,
+//             borderColor: "grey",
+//             backgroundColor: "white"
+//           }}
+//           switchOn={isTeacher}
+//           onPress={toggleIsTeacher}
+//           circleColorOff="white"
+//           circleColorOn="#C1EA69"
+//           duration={500}
+//         />
+//       </View>
+//     );
+//   }
+// }
 
 // -----------------------------------------------------------------------------------------------------------
 
-class Connexion extends Component {
-  render() {
-    const { firstName, setFirstName, password, setPassword } = this.props;
-    return (
-      // début du form de connexion
-      <View
-        style={{
-          width: "90%",
-          height: 290,
-          marginLeft: "5%",
-          marginBottom: 20,
-          marginRight: 5,
-          backgroundColor: "white"
-        }}
-      >
-        <Text style={{ position: "absolute", top: 8, left: 38 }}>
-          Your FirstName
-        </Text>
-        <TextInput
-          style={{
-            backgroundColor: "#F2F2F2",
-            width: 180,
-            marginLeft: 35,
-            marginTop: 30,
-            paddingLeft: 10,
-            borderWidth: 1.5,
-            borderRadius: 5
-          }}
-          onChangeText={value => setFirstName(value)}
-          value={firstName}
-          placeholder="John Doe"
-        />
-        <Text style={{ position: "absolute", top: 78, left: 38 }}>
-          Your Password
-        </Text>
-        <TextInput
-          style={{
-            backgroundColor: "#F2F2F2",
-            width: 180,
-            marginLeft: 35,
-            marginTop: 38,
-            paddingLeft: 10,
-            borderWidth: 1.5,
-            borderRadius: 5
-          }}
-          onChangeText={value => setPassword(value)}
-          value={password}
-          placeholder="********"
-        />
-      </View>
-    );
-  }
-}
+// class Connexion extends Component {
+//   render() {
+//     const { firstName, setFirstName, password, setPassword } = this.props;
+//     return (
+//       // début du form de connexion
+//       <View
+//         style={{
+//           width: "90%",
+//           height: 290,
+//           marginLeft: "5%",
+//           marginBottom: 20,
+//           marginRight: 5,
+//           backgroundColor: "white"
+//         }}
+//       >
+//         <Text style={{ position: "absolute", top: 8, left: 38 }}>
+//           Your FirstName
+//         </Text>
+//         <TextInput
+//           style={{
+//             backgroundColor: "#F2F2F2",
+//             width: 180,
+//             marginLeft: 35,
+//             marginTop: 30,
+//             paddingLeft: 10,
+//             borderWidth: 1.5,
+//             borderRadius: 5
+//           }}
+//           onChangeText={value => setFirstName(value)}
+//           value={firstName}
+//           placeholder="John Doe"
+//         />
+//         <Text style={{ position: "absolute", top: 78, left: 38 }}>
+//           Your Password
+//         </Text>
+//         <TextInput
+//           style={{
+//             backgroundColor: "#F2F2F2",
+//             width: 180,
+//             marginLeft: 35,
+//             marginTop: 38,
+//             paddingLeft: 10,
+//             borderWidth: 1.5,
+//             borderRadius: 5
+//           }}
+//           onChangeText={value => setPassword(value)}
+//           value={password}
+//           placeholder="********"
+//         />
+//       </View>
+//     );
+//   }
+// }

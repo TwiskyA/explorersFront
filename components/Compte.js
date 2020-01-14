@@ -94,18 +94,20 @@ class Compte extends Component {
             }}
           />
           {/* affichage nom et prénom du user */}
-          <Text
+          <View
             style={{
-              fontSize: 16,
-              fontWeight: "bold",
               marginLeft: "3%",
-              marginTop: "8.5%"
+              marginTop: "8.5%",
+              flexDirection: "row"
             }}
           >
-            {this.state.userInfos.name} {this.state.userInfos.lastname}
-            <Text> </Text>
-            <Ionicons name="md-school" size={20} />
-          </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {this.state.userInfos.name} {this.state.userInfos.lastname}
+            </Text>
+            <Text style={{ marginLeft: 4 }}>
+              <Ionicons name="md-school" size={20} />
+            </Text>
+          </View>
         </View>
         {/* view pour l'encart des anciens parcours + les cartes des questions*/}
         <View>
